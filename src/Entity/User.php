@@ -38,14 +38,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Emparejamiento::class, mappedBy: 'usuarioRecibe')]
     private Collection $regalos;
 
+    #[ORM\ManyToMany(targetEntity: GrupoAmigos::class, mappedBy: 'usuarios')]
+    private Collection $grupoAmigos;
 
+    #[ORM\OneToMany(targetEntity: Invitacion::class, mappedBy: 'usuarioInvitado')]
+    private Collection $invitacionesRecibidas;
 
-   
+    #[ORM\OneToMany(targetEntity: Invitacion::class, mappedBy: 'usuarioCreador')]
+    private Collection $invitacions;
+
+    #[ORM\OneToMany(targetEntity: Notificacion::class, mappedBy: 'usuarioDestino')]
+    private Collection $notificacions;
 
     public function __construct()
     {
         $this->participaciones = new ArrayCollection();
         $this->regalos = new ArrayCollection();
+        $this->grupoAmigos = new ArrayCollection();
+        $this->invitacionesRecibidas = new ArrayCollection();
+        $this->invitacions = new ArrayCollection();
+        $this->notificacions = new ArrayCollection();
+    
     }
 
     public function getId(): ?int
@@ -178,8 +191,121 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    /**
+     * @return Collection<int, GrupoAmigos>
+     */
+    public function getGrupoAmigos(): Collection
+    {
+        return $this->grupoAmigos;
+    }
 
+    public function addGrupoAmigo(GrupoAmigos $grupoAmigo): static
+    {
+        if (!$this->grupoAmigos->contains($grupoAmigo)) {
+            $this->grupoAmigos->add($grupoAmigo);
+            $grupoAmigo->addUsuario($this);
+        }
 
+        return $this;
+    }
 
+    public function removeGrupoAmigo(GrupoAmigos $grupoAmigo): static
+    {
+        if ($this->grupoAmigos->removeElement($grupoAmigo)) {
+            $grupoAmigo->removeUsuario($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invitacion>
+     */
+    public function getInvitacionesRecibidas(): Collection
+    {
+        return $this->invitacionesRecibidas;
+    }
+
+    public function addInvitacionesRecibida(Invitacion $invitacionesRecibida): static
+    {
+        if (!$this->invitacionesRecibidas->contains($invitacionesRecibida)) {
+            $this->invitacionesRecibidas->add($invitacionesRecibida);
+            $invitacionesRecibida->setUsuarioInvitado($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitacionesRecibida(Invitacion $invitacionesRecibida): static
+    {
+        if ($this->invitacionesRecibidas->removeElement($invitacionesRecibida)) {
+            // set the owning side to null (unless already changed)
+            if ($invitacionesRecibida->getUsuarioInvitado() === $this) {
+                $invitacionesRecibida->setUsuarioInvitado(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Invitacion>
+     */
+    public function getInvitacions(): Collection
+    {
+        return $this->invitacions;
+    }
+
+    public function addInvitacion(Invitacion $invitacion): static
+    {
+        if (!$this->invitacions->contains($invitacion)) {
+            $this->invitacions->add($invitacion);
+            $invitacion->setUsuarioCreador($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitacion(Invitacion $invitacion): static
+    {
+        if ($this->invitacions->removeElement($invitacion)) {
+            // set the owning side to null (unless already changed)
+            if ($invitacion->getUsuarioCreador() === $this) {
+                $invitacion->setUsuarioCreador(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Notificacion>
+     */
+    public function getNotificacions(): Collection
+    {
+        return $this->notificacions;
+    }
+
+    public function addNotificacion(Notificacion $notificacion): static
+    {
+        if (!$this->notificacions->contains($notificacion)) {
+            $this->notificacions->add($notificacion);
+            $notificacion->setUsuarioDestino($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNotificacion(Notificacion $notificacion): static
+    {
+        if ($this->notificacions->removeElement($notificacion)) {
+            // set the owning side to null (unless already changed)
+            if ($notificacion->getUsuarioDestino() === $this) {
+                $notificacion->setUsuarioDestino(null);
+            }
+        }
+
+        return $this;
+    }
 
 }

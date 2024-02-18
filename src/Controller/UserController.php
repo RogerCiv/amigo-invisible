@@ -78,4 +78,20 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    // #[Route('/buscar_usuarios', name: 'buscar_usuarios', methods: ['GET'])]
+    // public function buscarUsuarios(Request $request, UserRepository $userRepository): Response
+    // {
+    //     $query = $request->query->get('q');
+
+    //     if ($query) {
+    //         $usuarios = $userRepository->buscarUsuariosPorNombre($query); // Implementa tu lógica de búsqueda en el repositorio
+    //     } else {
+    //         $usuarios = [];
+    //     }
+
+    //     return $this->render('usuario/buscar_usuarios.html.twig', [
+    //         'usuarios' => $usuarios,
+    //     ]);
+    // }
 }

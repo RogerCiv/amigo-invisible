@@ -1,0 +1,29 @@
+{# mostrar_buscador_usuarios.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Buscador de Usuarios - {{ grupo_amigo.nombre }}{% endblock %}
+
+{% block body %}
+    <h1>Buscador de Usuarios</h1>
+    <p>Añadir usuarios al grupo: {{ grupo_amigo.nombre }}</p>
+
+   {# Formulario de búsqueda de usuarios #}
+    <form method="post" action="{{ path('buscar_usuarios', {'id': grupo_amigo.id}) }}">
+        <label for="username">Nombre de usuario:</label>
+        <input type="text" id="username" name="username" required>
+        <button type="submit">Buscar</button>
+    </form>
+
+    {# Lista de resultados de búsqueda de usuarios #}
+    {% if usuariosEncontrados is not empty %}
+        <h2>Usuarios Encontrados:</h2>
+        <ul>
+            {% for usuario in usuariosEncontrados %}
+                <li>{{ usuario.username }} - <a href="{{ path('agregar_usuario_a_grupo', {'idUsuario': usuario.id, 'idGrupo': grupo_amigo.id}) }}">Agregar al Grupo</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No se encontraron usuarios.</p>
+    {% endif %}
+{% endblock %}

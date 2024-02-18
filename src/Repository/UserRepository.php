@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\GrupoAmigos;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -38,6 +39,17 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $user->setPassword($newHashedPassword);
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
+    }
+    public function buscarUsuariosPorNombreExcluyendoGrupo($nombre, GrupoAmigos $grupoAmigo)
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->andWhere('u.username LIKE :nombre')
+            ->setParameter('nombre', '%' . $nombre . '%')
+            ->leftJoin('u.grupoAmigos', 'ga')
+            ->andWhere('ga.id != :grupoId OR ga.id IS NULL')
+            ->setParameter('grupoId', $grupoAmigo->getId());
+    
+        return $qb->getQuery()->getResult();
     }
 
 //    /**

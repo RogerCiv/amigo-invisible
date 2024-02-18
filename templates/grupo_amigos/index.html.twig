@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GrupoAmigos index{% endblock %}
+
+{% block body %}
+    <h1>GrupoAmigos index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for grupo_amigo in grupo_amigos %}
+            <tr>
+                <td>{{ grupo_amigo.id }}</td>
+                <td>{{ grupo_amigo.nombre }}</td>
+                <td>
+                    <a href="{{ path('app_grupo_amigos_show', {'id': grupo_amigo.id}) }}">show</a>
+                    <a href="{{ path('app_grupo_amigos_edit', {'id': grupo_amigo.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_grupo_amigos_new') }}">Create new</a>
+{% endblock %}

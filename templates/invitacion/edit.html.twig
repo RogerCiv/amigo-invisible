@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Invitacion{% endblock %}
+
+{% block body %}
+    <h1>Edit Invitacion</h1>
+
+    {{ include('invitacion/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_invitacion_index') }}">back to list</a>
+
+    {{ include('invitacion/_delete_form.html.twig') }}
+{% endblock %}

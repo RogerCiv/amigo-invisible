@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GrupoAmigos{% endblock %}
+
+{% block body %}
+    <h1>GrupoAmigos</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ grupo_amigo.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ grupo_amigo.nombre }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_grupo_amigos_index') }}">back to list</a>
+
+    <a href="{{ path('app_grupo_amigos_edit', {'id': grupo_amigo.id}) }}">edit</a>
+
+     {# Agrega el enlace para mostrar el buscador de usuarios #}
+    <a href="{{ path('mostrar_buscador_usuarios', {'id': grupo_amigo.id}) }}">Agregar Usuarios al Grupo</a>
+
+    {{ include('grupo_amigos/_delete_form.html.twig') }}
+{% endblock %}

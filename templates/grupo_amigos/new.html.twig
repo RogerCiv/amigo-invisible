@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New GrupoAmigos{% endblock %}
+
+{% block body %}
+    <h1>Create new GrupoAmigos</h1>
+
+    {{ include('grupo_amigos/_form.html.twig') }}
+
+    <a href="{{ path('app_grupo_amigos_index') }}">back to list</a>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Invitacion{% endblock %}
+
+{% block body %}
+    <h1>Invitacion</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ invitacion.id }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_invitacion_index') }}">back to list</a>
+
+    <a href="{{ path('app_invitacion_edit', {'id': invitacion.id}) }}">edit</a>
+
+    {{ include('invitacion/_delete_form.html.twig') }}
+{% endblock %}

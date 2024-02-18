@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit GrupoAmigos{% endblock %}
+
+{% block body %}
+    <h1>Edit GrupoAmigos</h1>
+
+    {{ include('grupo_amigos/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_grupo_amigos_index') }}">back to list</a>
+
+    {{ include('grupo_amigos/_delete_form.html.twig') }}
+{% endblock %}

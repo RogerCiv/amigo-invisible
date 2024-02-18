@@ -22,5 +22,25 @@
     {% else %}
         <p>No tienes emparejamientos por el momento.</p>
     {% endif %}
+
+   {% if invitaciones is not empty %}
+    <h2>Invitaciones:</h2>
+    <ul>
+        {% for invitacion in invitaciones %}
+            {% set grupoAmigos = invitacion.getGrupoAmigos() %}
+            {% if grupoAmigos is not empty %}
+                {% set primerGrupo = grupoAmigos.first() %}
+                <li>
+                    Has recibido una invitación para unirte al grupo de amigos '{{ primerGrupo.getNombre() }}'.
+                    <form method="post" action="{{ path('aceptar_invitacion', {'id': invitacion.getId()}) }}">
+                        <button type="submit" name="aceptar">Aceptar</button>
+                        <button type="submit" name="rechazar">Rechazar</button>
+                    </form>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>
+{% endif %}
+
 </div>
 {% endblock %}
