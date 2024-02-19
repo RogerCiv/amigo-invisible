@@ -51,6 +51,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     
         return $qb->getQuery()->getResult();
     }
+    public function buscarUsuariosPorNombreYGrupo($nombre, GrupoAmigos $grupoAmigo) {
+        $qb = $this->createQueryBuilder('u')
+            ->andWhere('u.username LIKE :nombre')
+            ->setParameter('nombre', '%' . $nombre . '%')
+            ->leftJoin('u.grupoAmigos', 'ga')
+            ->andWhere('ga.id = :grupoId')
+            ->setParameter('grupoId', $grupoAmigo->getId());
+    }
 
 //    /**
 //     * @return User[] Returns an array of User objects

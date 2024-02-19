@@ -25,9 +25,19 @@ class Sorteo
     #[ORM\OneToMany(targetEntity: Emparejamiento::class, mappedBy: 'sorteo')]
     private Collection $emparejamientos;
 
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'sorteos')]
+    private Collection $usuarios;
+
+    #[ORM\ManyToOne(inversedBy: 'sorteos')]
+    private ?GrupoAmigos $grupoAmigos = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tipoSorteo = null;
+
     public function __construct()
     {
         $this->emparejamientos = new ArrayCollection();
+        $this->usuarios = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -85,6 +95,54 @@ class Sorteo
                 $emparejamiento->setSorteo(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getUsuarios(): Collection
+    {
+        return $this->usuarios;
+    }
+
+    public function addUsuario(User $usuario): static
+    {
+        if (!$this->usuarios->contains($usuario)) {
+            $this->usuarios->add($usuario);
+        }
+
+        return $this;
+    }
+
+    public function removeUsuario(User $usuario): static
+    {
+        $this->usuarios->removeElement($usuario);
+
+        return $this;
+    }
+
+    public function getGrupoAmigos(): ?GrupoAmigos
+    {
+        return $this->grupoAmigos;
+    }
+
+    public function setGrupoAmigos(?GrupoAmigos $grupoAmigos): static
+    {
+        $this->grupoAmigos = $grupoAmigos;
+
+        return $this;
+    }
+
+    public function getTipoSorteo(): ?string
+    {
+        return $this->tipoSorteo;
+    }
+
+    public function setTipoSorteo(string $tipoSorteo): static
+    {
+        $this->tipoSorteo = $tipoSorteo;
 
         return $this;
     }

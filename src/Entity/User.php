@@ -50,6 +50,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Notificacion::class, mappedBy: 'usuarioDestino')]
     private Collection $notificacions;
 
+    #[ORM\ManyToMany(targetEntity: Sorteo::class, mappedBy: 'usuarios')]
+    private Collection $sorteos;
+
     public function __construct()
     {
         $this->participaciones = new ArrayCollection();
@@ -58,6 +61,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->invitacionesRecibidas = new ArrayCollection();
         $this->invitacions = new ArrayCollection();
         $this->notificacions = new ArrayCollection();
+        $this->sorteos = new ArrayCollection();
     
     }
 
@@ -303,6 +307,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($notificacion->getUsuarioDestino() === $this) {
                 $notificacion->setUsuarioDestino(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sorteo>
+     */
+    public function getSorteos(): Collection
+    {
+        return $this->sorteos;
+    }
+
+    public function addSorteo(Sorteo $sorteo): static
+    {
+        if (!$this->sorteos->contains($sorteo)) {
+            $this->sorteos->add($sorteo);
+            $sorteo->addUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSorteo(Sorteo $sorteo): static
+    {
+        if ($this->sorteos->removeElement($sorteo)) {
+            $sorteo->removeUsuario($this);
         }
 
         return $this;

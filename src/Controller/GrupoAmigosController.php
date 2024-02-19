@@ -149,8 +149,22 @@ class GrupoAmigosController extends AbstractController
     
         // Implementar la lógica para agregar el usuario al grupo
         $grupoAmigo->addUsuario($usuario);
+        $invitacion = new Invitacion();
+                $invitacion
+                    ->addGrupoAmigo($grupoAmigo)
+                    ->setUsuarioInvitado($usuario)
+                    ->setUsuarioCreador($this->getUser())
+                    ->setAceptada(false);
+
+                $notificacion = new Notificacion();
+                $notificacion
+                    ->setUsuarioDestino($usuario)
+                    ->setMensaje("Has recibido una invitación para unirte al grupo de amigos '{$grupoAmigo->getNombre()}'")
+                    ->setLeida(false);
     
         // Persistir los cambios en la base de datos
+        $entityManager->persist($invitacion);
+        $entityManager->persist($notificacion);
         $entityManager->flush();
     
         // Redirigir de nuevo a la vista show del grupo

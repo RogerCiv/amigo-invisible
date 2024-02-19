@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Form\SorteoType;
 use App\Repository\EmparejamientoRepository;
 use App\Repository\SorteoRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,7 +18,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/sorteo')]
 class SorteoController extends AbstractController
 {
-    #[Route('/', name: 'app_sorteo_index', methods: ['GET'])]
+     #[Route('/', name: 'app_sorteo_index', methods: ['GET'])]
     public function index(SorteoRepository $sorteoRepository): Response
     {
         return $this->render('sorteo/index.html.twig', [
@@ -114,5 +115,49 @@ class SorteoController extends AbstractController
         $this->addFlash('success', 'Sorteo realizado correctamente.');
 
         return $this->redirectToRoute('app_sorteo_show', ['id' => $id]);
+    }
+
+    #[Route('/{idSorteo}/buscador_usuarios_sorteo',name: 'buscador_usuarios_sorteo', methods: ['GET'])]public function buscarUsuarios($idSorteo, Request $request, UserRepository $userRepository,SorteoRepository $sorteoRepository): Response
+    {
+        // Cargar la entidad Sorteo usando el idSorteo
+        $sorteo = $sorteoRepository->find($idSorteo);
+    
+        $username = $request->request->get('username');
+        $usuariosEncontrados = $userRepository->findAll();
+    
+        return $this->render('sorteo/buscador_usuarios_sorteo.html.twig', [
+            'sorteo' => $sorteo,
+            'usuariosEncontrados' => $usuariosEncontrados,
+        ]);
+    }
+
+    #[Route('/{idSorteo}/buscar_usuarios_sorteo', name: 'buscar_usuarios_sorteo', methods: ['POST'])]
+    public function mostrarBuscadorUsuarios(Request $request, Sorteo $sorteo, UserRepository $userRepository): Response
+    {
+        $username = $request->request->get('username');
+        $usuariosEncontrados = $userRepository->findAll();
+
+        return $this->render('sorteo/buscador_usuarios_sorteo.html.twig', [
+            'sorteo' => $sorteo,
+            'usuariosEncontrados' => $usuariosEncontrados,
+        ]);
+
+    }
+
+    #[Route('{idSorteo}/agregar_usuario_sorteo/{idUsuario}', name: 'agregar_usuario_sorteo', methods: ['GET'])]
+    public function agregarUsuarioASorteo(int $idSorteo, int $idUsuario, EntityManagerInterface $entityManager): Response
+    {
+        // Obtener las instancias de Sorteo y User a partir de los IDs
+        $sorteo = $entityManager->getRepository(Sorteo::class)->find($idSorteo);
+        $usuario = $entityManager->getRepository(User::class)->find($idUsuario);
+
+        // Agregar el usuario al sorteo
+        $sorteo->addUsuario($usuario);
+
+        $entityManager->persist($sorteo);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_sorteo_show', ['id' => $idSorteo]);
+
     }
 }
