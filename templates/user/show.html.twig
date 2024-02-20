@@ -26,6 +26,21 @@
         </tbody>
     </table>
 
+    <h2> Sorteos Finalizados </h2>
+    {% for sorteoFinalizado in sorteosFinalizados %}
+       <p> Id: {{ sorteoFinalizado.id }} - Presupuesto: {{ sorteoFinalizado.presupuesto }} </p>
+    {% endfor %}
+
+
+    <h2> Sorteos No Finalizados </h2>
+
+    {% for sorteoSinFinalizar in sorteosSinFinalizar %}
+        <p> Id: {{ sorteoSinFinalizar.id }} - Presupuesto: {{ sorteoSinFinalizar.presupuesto }} </p>
+    {% endfor %}
+
+
+    <br>
+
     <a href="{{ path('app_user_index') }}">back to list</a>
 
     <a href="{{ path('app_user_edit', {'id': user.id}) }}">edit</a>

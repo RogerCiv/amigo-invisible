@@ -67,9 +67,10 @@ class SorteoType extends AbstractType
                         if ($sorteo->getId() === null) {
                             $sorteo->setStatus('finalizado');
                             $this->entityManager->persist($emparejamiento);
+                            $this->entityManager->persist($sorteo);
+                            $this->entityManager->flush();
                         }
                     }
-                    $this->entityManager->flush();
                 }
             });
     

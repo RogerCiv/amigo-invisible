@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\User1Type;
+use App\Repository\SorteoRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -43,10 +44,15 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    public function show(User $user): Response
+    public function show(User $user, SorteoRepository $sorteoRepository): Response
     {
+
+        $sorteosSinFinalizar = $sorteoRepository->findBy(['status' => 'no finalizado']);
+        $sorteosFinalizados = $sorteoRepository->findBy(['status' => 'finalizado']);
         return $this->render('user/show.html.twig', [
             'user' => $user,
+            'sorteosSinFinalizar' => $sorteosSinFinalizar,
+            'sorteosFinalizados' => $sorteosFinalizados
         ]);
     }
 
@@ -78,20 +84,5 @@ class UserController extends AbstractController
 
         return $this->redirectToRoute('app_user_index', [], Response::HTTP_SEE_OTHER);
     }
-
-    // #[Route('/buscar_usuarios', name: 'buscar_usuarios', methods: ['GET'])]
-    // public function buscarUsuarios(Request $request, UserRepository $userRepository): Response
-    // {
-    //     $query = $request->query->get('q');
-
-    //     if ($query) {
-    //         $usuarios = $userRepository->buscarUsuariosPorNombre($query); // Implementa tu lógica de búsqueda en el repositorio
-    //     } else {
-    //         $usuarios = [];
-    //     }
-
-    //     return $this->render('usuario/buscar_usuarios.html.twig', [
-    //         'usuarios' => $usuarios,
-    //     ]);
-    // }
+    
 }
