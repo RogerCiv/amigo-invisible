@@ -34,6 +34,7 @@ class SorteoController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $sorteo->setStatus('no finalizado');
             $entityManager->persist($sorteo);
             $entityManager->flush();
 
@@ -109,7 +110,7 @@ class SorteoController extends AbstractController
             $em->persist($emparejamiento);
         }
 
-        // Guardar emparejamientos en la base de datos
+        $sorteo->setStatus('finalizado');
         $em->flush();
 
         $this->addFlash('success', 'Sorteo realizado correctamente.');

@@ -62,11 +62,14 @@ class SorteoType extends AbstractType
                         $emparejamiento->setSorteo($sorteo);
             
                         $sorteo->addEmparejamiento($emparejamiento);
-            
+                        
+                        
                         if ($sorteo->getId() === null) {
+                            $sorteo->setStatus('finalizado');
                             $this->entityManager->persist($emparejamiento);
                         }
                     }
+                    $this->entityManager->flush();
                 }
             });
     

@@ -13,13 +13,13 @@ class Emparejamiento
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'participaciones')]
+    #[ORM\ManyToOne(inversedBy: 'participaciones', cascade: ['persist'])]
     private ?User $usuarioRegala = null;
 
-    #[ORM\ManyToOne(inversedBy: 'regalos')]
+    #[ORM\ManyToOne(inversedBy: 'regalos', cascade: ['persist'])]
     private ?User $usuarioRecibe = null;
 
-    #[ORM\ManyToOne(inversedBy: 'emparejamientos')]
+    #[ORM\ManyToOne(inversedBy: 'emparejamientos', cascade: ['persist'])]
     private ?Sorteo $sorteo = null;
 
     public function getId(): ?int

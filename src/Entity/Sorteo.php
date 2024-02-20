@@ -34,6 +34,9 @@ class Sorteo
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $tipoSorteo = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $status = null;
+
     public function __construct()
     {
         $this->emparejamientos = new ArrayCollection();
@@ -143,6 +146,18 @@ class Sorteo
     public function setTipoSorteo(string $tipoSorteo): static
     {
         $this->tipoSorteo = $tipoSorteo;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
 
         return $this;
     }
