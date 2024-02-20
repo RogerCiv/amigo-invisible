@@ -11,6 +11,9 @@
 <div class="example-wrapper">
     <h1>Hello {{ app.user.username }}! ✅</h1>
 
+  <a href="{{ path('app_sorteo_new') }}">Crear nuevo sorteo</a>
+
+  <a href="{{ path('app_grupo_amigos_index') }}">Indice Grupos amigos</a>
 
  {% if emparejamientos is not empty %}
         <h2>Emparejamientos:</h2>

@@ -31,7 +31,7 @@ class Sorteo
     #[ORM\ManyToOne(inversedBy: 'sorteos')]
     private ?GrupoAmigos $grupoAmigos = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $tipoSorteo = null;
 
     public function __construct()

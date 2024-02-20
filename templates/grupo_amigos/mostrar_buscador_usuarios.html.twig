@@ -17,7 +17,7 @@
 
     {# Lista de resultados de búsqueda de usuarios #}
     {% if usuariosEncontrados is not empty %}
-        <h2>Usuarios Encontrados:</h2>
+        <h2>Usuarios Encontrados:22</h2>
         <ul>
             {% for usuario in usuariosEncontrados %}
                 <li>{{ usuario.username }} - <a href="{{ path('agregar_usuario_a_grupo', {'idUsuario': usuario.id, 'idGrupo': grupo_amigo.id}) }}">Agregar al Grupo</a></li>
